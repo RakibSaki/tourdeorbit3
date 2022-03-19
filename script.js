@@ -4,7 +4,7 @@ function setup() {
 }
 
 let unitsZoom = 1 / 1e9     // 1 pixel shows 1 billion meters
-let userZoom = 1
+let userZoom = 1        // user can further control zoom
 
 function draw() {
     background(0)
