@@ -1,0 +1,9 @@
+* {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+#test-color {
+    color: hsla(0, 0%, 100%)
+}
