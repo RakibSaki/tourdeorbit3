@@ -2,8 +2,8 @@
 
 let planet = {
     width: 2e10,
-    r: new Vector(1.19e11, 0),
-    v: new Vector(2.989e4, PI / 2),
+    r: new Vector(1.49e11, 0),
+    v: new Vector(3.989e4, PI / 2),
     drawOrbit() {
 
     },
@@ -45,6 +45,29 @@ let planet = {
         translate(this.ae, 0)
         rotate(-this.phi)
     },
+    drawOpenOrbit() {
+        rotate(this.phi)
+        noFill()
+        stroke(0, 0, 100)
+        for (point of this.path) {
+            circle(point[0], point[1], this.width / 10)
+        }
+        translate(-this.atoe, 0)
+        stroke(0, 0, 100, 30)
+        // directrix
+        line(this.ae, biggestVisible(), this.ae, -biggestVisible())
+        // position of planet from origin of hyperbola in the rotated frame where orbit is horizontal
+        let phiPlanet = this.r.copy()
+        phiPlanet.rotate(-this.phi)
+        phiPlanet.add(new Vector(this.atoe, 0))
+        // line to star
+        line(phiPlanet.x, phiPlanet.y, this.atoe, 0)
+        // line to directrix
+        stroke(200, 50, 100, 20)
+        line(this.ae, phiPlanet.y, phiPlanet.x, phiPlanet.y)
+        translate(this.atoe, 0)
+        rotate(-this.phi)
+    },
     move() {
         this.v.rotate(0.01)
         this.r.rotate(0.001)
@@ -70,6 +93,22 @@ let planet = {
             this.atoe = this.a / this.e
             this.b = sqrt(sq(this.a) - sq(this.ae))
             this.drawOrbit = this.drawEllipticOrbit
+        } else {
+            // find path
+            this.path = []
+            this.farthestAngle = Math.acos(- 1 / this.e)
+            let steps = 30
+            for (let i = 1; i < steps; i++) {
+                let th = this.farthestAngle - (2 * this.farthestAngle * i / steps)
+                let r = new Vector(this.h * this.h / (mu * (1 + (this.e * Math.cos(th)))), th)
+                this.path.push([r.x, r.y])
+                this.path.push([r.x, -r.y])
+            }
+            // other calculations
+            this.a = 0.5 * mu / (this.E)
+            this.ae = this.a * this.e
+            this.atoe = this.a / this.e
+            this.drawOrbit = this.drawOpenOrbit
         }
     },
 }
