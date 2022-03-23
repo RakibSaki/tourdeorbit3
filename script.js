@@ -11,8 +11,9 @@ function draw() {
     translate(width / 2, height / 2)
     scale(1, -1)
     scale(unitsZoom * userZoom)
-    // planet.draw()
+    planet.draw()
     star.draw()
+    planet.move()
 }
 
 function windowResized() {
