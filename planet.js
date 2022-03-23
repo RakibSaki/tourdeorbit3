@@ -24,8 +24,26 @@ let planet = {
         stroke(0, 0, 100)
         noFill()
         ellipse(0, 0, this.a * 2, this.b * 2)
+        // position of planet from origin of ellipse in the rotated frame where orbit is horizontal
+        let phiPlanet = this.r.copy()
+        phiPlanet.rotate(-this.phi)
+        phiPlanet.add(new Vector(this.ae, 0))
+        stroke(0, 0, 100, 30)
+        // lines to foci
+        line(phiPlanet.x, phiPlanet.y, this.ae, 0)
+        line(phiPlanet.x, phiPlanet.y, -this.ae, 0)
+        // directrices
+        line(this.atoe, biggestVisible(), this.atoe, -biggestVisible())
+        line(-this.atoe, biggestVisible(), -this.atoe, -biggestVisible())
+        // lines to directrices
+        stroke(0, 0, 100, 20)
+        line(this.atoe, phiPlanet.y, phiPlanet.x, phiPlanet.y)
+        line(-this.atoe, phiPlanet.y, phiPlanet.x, phiPlanet.y)
         translate(this.ae, 0)
         rotate(-this.phi)
+        // let toOtherFoci = new Vector(-this.ae * 2, this.phi + PI)
+        // line(0, 0, this.r.x, this.r.y)
+        // line(toOtherFoci.x, toOtherFoci.y, this.r.x, this.r.y)
     },
     move() {
         this.v.rotate(0.01)
@@ -49,6 +67,7 @@ let planet = {
         if (this.e < 1) {   // elliptic
             this.a = 0.5 * mu / (-this.E)
             this.ae = this.a * this.e
+            this.atoe = this.a / this.e
             this.b = sqrt(sq(this.a) - sq(this.ae))
             this.drawOrbit = this.drawEllipticOrbit
         }

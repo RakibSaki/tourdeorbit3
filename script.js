@@ -6,6 +6,7 @@ function setup() {
 
 let unitsZoom = 1 / 1e9     // 1 pixel shows 1 billion meters
 let userZoom = 1        // user can further control zoom
+let biggestVisible = () => (width + height) / (unitsZoom * userZoom)
 
 function draw() {
     background(0)
