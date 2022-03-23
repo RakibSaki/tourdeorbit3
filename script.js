@@ -1,6 +1,7 @@
 function setup() {
     createCanvas(windowWidth, windowHeight)
     colorMode(HSB, 360, 100, 100, 100)
+    planet.calculateOrbit()
 }
 
 let unitsZoom = 1 / 1e9     // 1 pixel shows 1 billion meters
