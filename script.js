@@ -13,6 +13,8 @@ function draw() {
     translate(width / 2, height / 2)
     scale(1, -1)
     scale(unitsZoom * userZoom)
+    strokeWeight(1 / (unitsZoom * userZoom))
+    planet.drawVelocity()
     planet.draw()
     star.draw()
     planet.move()

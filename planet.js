@@ -12,18 +12,18 @@ let planet = {
         noStroke()
         fill(150, 80, 80)
         circle(this.r.x, this.r.y, this.width)
-        stroke(0, 0, 100)
-        strokeWeight(1e9)
-        line(this.r.x, this.r.y, this.r.x + (this.v.x * 1e7), this.r.y + (this.v.y * 1e7))
-        
+    },
+    drawVelocity() {
+        stroke(0, 50, 100)
+        let vdraw = this.v.copy()
+        vdraw.normalize()
+        vdraw.mult(this.width * 2.5)
+        vdraw.add(this.r)
+        line(this.r.x, this.r.y, vdraw.x, vdraw.y)
     },
     drawEllipticOrbit() {
         rotate(this.phi)
         translate(-this.ae, 0)
-        strokeWeight(1e9)
-        stroke(0, 0, 100)
-        noFill()
-        ellipse(0, 0, this.a * 2, this.b * 2)
         // position of planet from origin of ellipse in the rotated frame where orbit is horizontal
         let phiPlanet = this.r.copy()
         phiPlanet.rotate(-this.phi)
@@ -36,14 +36,14 @@ let planet = {
         line(this.atoe, biggestVisible(), this.atoe, -biggestVisible())
         line(-this.atoe, biggestVisible(), -this.atoe, -biggestVisible())
         // lines to directrices
-        stroke(0, 0, 100, 20)
+        stroke(200, 50, 100, 20)
         line(this.atoe, phiPlanet.y, phiPlanet.x, phiPlanet.y)
         line(-this.atoe, phiPlanet.y, phiPlanet.x, phiPlanet.y)
+        stroke(0, 0, 100)
+        noFill()
+        ellipse(0, 0, this.a * 2, this.b * 2)
         translate(this.ae, 0)
         rotate(-this.phi)
-        // let toOtherFoci = new Vector(-this.ae * 2, this.phi + PI)
-        // line(0, 0, this.r.x, this.r.y)
-        // line(toOtherFoci.x, toOtherFoci.y, this.r.x, this.r.y)
     },
     move() {
         this.v.rotate(0.01)
