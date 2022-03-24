@@ -8,7 +8,7 @@ let unitsZoom = 1 / 1e9     // 1 pixel shows 1 billion meters
 let userZoom = 1        // user can further control zoom
 let biggestVisible = () => (width + height) / (unitsZoom * userZoom)
 
-let tscale = 6311.52    // 1 real millisecond represents this many virtual seconds
+let tscale = 6311.52    // 1 real millisecond represents this many virtual seconds (so an earth year is shown in five seconds)
 let lastTime = 0
 
 function draw() {

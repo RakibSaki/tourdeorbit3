@@ -3,7 +3,7 @@
 let planet = {
     width: 2e10,
     r: new Vector(1.49e11, 0),
-    v: new Vector(3.229e4, -PI / 2),
+    v: new Vector(3.229e4, PI / 2),
     drawOrbit() {
 
     },
@@ -96,6 +96,12 @@ let planet = {
         } else {
             this.r = new Vector(rmag, this.phi - this.th)
         }
+        let speed = sqrt(2 * (this.E + (mu / this.r.mag())))
+        let vth = Math.asin(clipNails(this.h / (this.r.mag() * speed)))
+        if (this.th > PI ) {
+            vth = PI - vth
+        }
+        this.v = new Vector(speed, vth + this.r.th())
     },
     calculateOrbit() {
         this.E = (0.5 * sq(this.v.mag())) - (mu / this.r.mag())
@@ -107,7 +113,7 @@ let planet = {
             this.th *= -1
         }
         this.phi = this.r.th() - this.th    // inclination of orbit relative to 'x-axis' of screen
-        if (this.h < 0) {   // if rotating in negative direction, phi shoulb be reversed
+        if (this.h < 0) {   // if rotating in negative direction, positive th is in negative direction
             this.phi = this.r.th() + this.th
         }
         if (this.e < 1) {   // elliptic
