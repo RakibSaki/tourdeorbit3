@@ -8,6 +8,9 @@ let unitsZoom = 1 / 1e9     // 1 pixel shows 1 billion meters
 let userZoom = 1        // user can further control zoom
 let biggestVisible = () => (width + height) / (unitsZoom * userZoom)
 
+let tscale = 6311.52    // 1 real millisecond represents this many virtual seconds
+let lastTime = 0
+
 function draw() {
     background(0)
     translate(width / 2, height / 2)
@@ -17,7 +20,8 @@ function draw() {
     planet.drawVelocity()
     planet.draw()
     star.draw()
-    planet.move()
+    planet.move((millis() - lastTime) * tscale)
+    lastTime = millis()
 }
 
 function windowResized() {

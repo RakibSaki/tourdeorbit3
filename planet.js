@@ -3,7 +3,7 @@
 let planet = {
     width: 2e10,
     r: new Vector(1.49e11, 0),
-    v: new Vector(3.989e4, PI / 2),
+    v: new Vector(3.229e4, -PI / 2),
     drawOrbit() {
 
     },
@@ -68,11 +68,34 @@ let planet = {
         translate(this.atoe, 0)
         rotate(-this.phi)
     },
-    move() {
-        this.v.rotate(0.01)
-        this.r.rotate(0.001)
-        this.r.mult(1.001)
-        this.calculateOrbit()
+    move(time) {
+        let costh0 = Math.cos(this.th)
+        let cosu0 = (this.e + costh0) / (1 + (this.e * costh0))
+        let u0 = Math.acos(clipNails(cosu0))
+        if (this.th > PI) {
+            u0 = (2 * PI) - u0
+        }
+        let sinu0 = Math.sin(u0)
+        let M0 = u0 - (this.e * sinu0)
+        let tof0 = this.T * M0 / (2 * PI)
+        let tof1 = (tof0 + time) % this.T
+        let M1 = tof1 * 2 * PI / this.T
+        let [u, u1] = [0, M1]
+        while (Math.abs(u1 - u) > 0.0001) {
+            [u, u1] = [u1, M1 + (this.e * Math.sin(u1))]
+        }
+        let cosu1 = Math.cos(u1)
+        let costh1 = (cosu1 - this.e) / (1 - (this.e * cosu1))
+        this.th = Math.acos(clipNails(costh1))
+        if (tof1 > this.T / 2) {
+            this.th = (2 * PI) - this.th
+        }
+        let rmag = this.h * this.h / (mu * (1 + (this.e * Math.cos(this.th))))
+        if (this.h > 0) {
+            this.r = new Vector(rmag, this.phi + this.th)
+        } else {
+            this.r = new Vector(rmag, this.phi - this.th)
+        }
     },
     calculateOrbit() {
         this.E = (0.5 * sq(this.v.mag())) - (mu / this.r.mag())
@@ -92,6 +115,7 @@ let planet = {
             this.ae = this.a * this.e
             this.atoe = this.a / this.e
             this.b = sqrt(sq(this.a) - sq(this.ae))
+            this.T = sqrt(4 * sq(PI) * Math.pow(this.a, 3) / mu)
             this.drawOrbit = this.drawEllipticOrbit
         } else {
             // find path
@@ -112,6 +136,9 @@ let planet = {
         }
     },
 }
+
+planet.r.rotate(PI / 3)
+planet.v.rotate(PI / 3)
 
 function clipNails(x) {
     if (x > 1 && x - 1 < 0.00001) {
