@@ -1,9 +1,9 @@
-[PI, sq, sqrt, mu, acos] = [Math.PI, x => x * x, Math.sqrt, star.mu, x => Math.acos(clipNails(x))]
+[PI, sq, sqrt, acos] = [Math.PI, x => x * x, Math.sqrt, x => Math.acos(clipNails(x))]
 
 let planet = {
     width: 2e10,
     r: new Vector(1.49e11, 0),
-    v: new Vector(3.229e4, PI / 2),
+    v: new Vector(4.029e4, -PI / 2),
     drawOrbit() {
 
     },
@@ -69,34 +69,56 @@ let planet = {
         rotate(-this.phi)
     },
     move(time) {
-        let costh0 = Math.cos(this.th)
-        let cosu0 = (this.e + costh0) / (1 + (this.e * costh0))
-        let u0 = Math.acos(clipNails(cosu0))
-        if (this.th > PI) {
-            u0 = (2 * PI) - u0
+        if (this.e < 1) {
+            if (star.mu == Infinity || (this.E / sq(star.mu) == 0 && this.E != 0)) {
+                console.log('mu too big')
+                return
+            }
+            let costh0 = Math.cos(this.th)
+            let cosu0 = (this.e + costh0) / (1 + (this.e * costh0))
+            let u0 = Math.acos(clipNails(cosu0))
+            if (this.th > PI) {
+                u0 = (2 * PI) - u0
+            }
+            let sinu0 = Math.sin(u0)
+            let M0 = u0 - (this.e * sinu0)
+            let tof0 = this.T * M0 / (2 * PI)
+            let tof1 = (tof0 + time) % this.T
+            let M1 = 2 * PI * (tof1 / this.T)
+            let [u, u1] = [0, M1]
+            while (Math.abs(u1 - u) > 0.0001) {
+                [u, u1] = [u1, M1 + (this.e * Math.sin(u1))]
+            }
+            let cosu1 = Math.cos(u1)
+            let costh1 = (cosu1 - this.e) / (1 - (this.e * cosu1))
+            this.th = Math.acos(clipNails(costh1))
+            if (tof1 > this.T / 2) {
+                this.th = (2 * PI) - this.th
+            }
+        } else {
+            let timeDone = 0
+            while (timeDone < time) {
+                let w = this.h / (sq(this.r.x) + sq(this.r.y))
+                let delT = Math.abs(0.001 / w)
+                if ((delT + timeDone) > time) {
+                    delT = time - timeDone
+                }
+                if (this.h > 0) {
+                    this.th += w * delT
+                } else {
+                    this.th -= w * delT
+                }
+                timeDone += delT
+            }
         }
-        let sinu0 = Math.sin(u0)
-        let M0 = u0 - (this.e * sinu0)
-        let tof0 = this.T * M0 / (2 * PI)
-        let tof1 = (tof0 + time) % this.T
-        let M1 = tof1 * 2 * PI / this.T
-        let [u, u1] = [0, M1]
-        while (Math.abs(u1 - u) > 0.0001) {
-            [u, u1] = [u1, M1 + (this.e * Math.sin(u1))]
-        }
-        let cosu1 = Math.cos(u1)
-        let costh1 = (cosu1 - this.e) / (1 - (this.e * cosu1))
-        this.th = Math.acos(clipNails(costh1))
-        if (tof1 > this.T / 2) {
-            this.th = (2 * PI) - this.th
-        }
-        let rmag = this.h * this.h / (mu * (1 + (this.e * Math.cos(this.th))))
+        console.log(this.th)
+        let rmag = this.h * this.h / (star.mu * (1 + (this.e * Math.cos(this.th))))
         if (this.h > 0) {
             this.r = new Vector(rmag, this.phi + this.th)
         } else {
             this.r = new Vector(rmag, this.phi - this.th)
         }
-        let speed = sqrt(2 * (this.E + (mu / this.r.mag())))
+        let speed = sqrt(2 * (this.E + (star.mu / this.r.mag())))
         let vth = Math.asin(clipNails(this.h / (this.r.mag() * speed)))
         if (this.th > PI ) {
             vth = PI - vth
@@ -104,10 +126,19 @@ let planet = {
         this.v = new Vector(speed, vth + this.r.th())
     },
     calculateOrbit() {
-        this.E = (0.5 * sq(this.v.mag())) - (mu / this.r.mag())
+        console.log(this.r.th())
+        if (star.mu == Infinity) {
+            console.log('mu too big')
+            return
+        }
+        this.E = (0.5 * sq(this.v.mag())) - (star.mu / this.r.mag())
         this.h = this.r.cross(this.v).z
-        this.e = sqrt(1 + (this.E * 2 * sq(this.h) / sq(mu)))
-        this.th = Math.acos(clipNails(((sq(this.h) / (mu * this.r.mag())) - 1) / this.e))
+        if (this.E / sq(star.mu) == 0) {
+            console.log('mu too big')
+            return
+        }
+        this.e = sqrt(1 + (2 * sq(this.h) * (this.E / sq(star.mu))))
+        this.th = Math.acos(clipNails(((sq(this.h) / (star.mu * this.r.mag())) - 1) / this.e))
         console.log(this.th)
         if (this.r.dot(this.v) < 0) {   // if planet is approaching 0 phase (getting closer), then phase is negative
             this.th *= -1
@@ -117,11 +148,11 @@ let planet = {
             this.phi = this.r.th() + this.th
         }
         if (this.e < 1) {   // elliptic
-            this.a = 0.5 * mu / (-this.E)
+            this.a = 0.5 * star.mu / (-this.E)
             this.ae = this.a * this.e
             this.atoe = this.a / this.e
             this.b = sqrt(sq(this.a) - sq(this.ae))
-            this.T = sqrt(4 * sq(PI) * Math.pow(this.a, 3) / mu)
+            this.T = sqrt(4 * sq(PI) * Math.pow(this.a, 3) / star.mu)
             this.drawOrbit = this.drawEllipticOrbit
         } else {
             // find path
@@ -130,21 +161,18 @@ let planet = {
             let steps = 30
             for (let i = 1; i < steps; i++) {
                 let th = this.farthestAngle - (2 * this.farthestAngle * i / steps)
-                let r = new Vector(this.h * this.h / (mu * (1 + (this.e * Math.cos(th)))), th)
+                let r = new Vector(this.h * this.h / (star.mu * (1 + (this.e * Math.cos(th)))), th)
                 this.path.push([r.x, r.y])
                 this.path.push([r.x, -r.y])
             }
             // other calculations
-            this.a = 0.5 * mu / (this.E)
+            this.a = 0.5 * star.mu / (this.E)
             this.ae = this.a * this.e
             this.atoe = this.a / this.e
             this.drawOrbit = this.drawOpenOrbit
         }
     },
 }
-
-planet.r.rotate(PI / 3)
-planet.v.rotate(PI / 3)
 
 function clipNails(x) {
     if (x > 1 && x - 1 < 0.00001) {
