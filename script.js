@@ -27,3 +27,13 @@ function draw() {
 function windowResized() {
     resizeCanvas(windowWidth, windowHeight)
 }
+
+function zoomIn() {
+    userZoom *= 1.1
+    document.querySelector('#sscale').innerHTML = (150 / (userZoom * unitsZoom)).toPrecision(3)
+}
+
+function zoomOut() {
+    userZoom /= 1.1
+    document.querySelector('#sscale').innerHTML = (150 / (userZoom * unitsZoom)).toPrecision(3)
+}

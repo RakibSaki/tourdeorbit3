@@ -3,7 +3,7 @@
 let planet = {
     width: 2e10,
     r: new Vector(1.49e11, 0),
-    v: new Vector(4.029e4, -PI / 2),
+    v: new Vector(3.029e4, -PI / 2),
     drawOrbit() {
 
     },
@@ -113,7 +113,6 @@ let planet = {
                 timeDone += delT
             }
         }
-        console.log(this.th)
         let rmag = this.h * this.h / (star.mu * (1 + (this.e * Math.cos(this.th))))
         if (this.h > 0) {
             this.r = new Vector(rmag, this.phi + this.th)
@@ -128,7 +127,6 @@ let planet = {
         this.v = new Vector(speed, vth + this.r.th())
     },
     calculateOrbit() {
-        console.log(this.r.th())
         if (star.mu == Infinity) {
             console.log('mu too big')
             return
@@ -141,7 +139,6 @@ let planet = {
         }
         this.e = sqrt(1 + (2 * sq(this.h) * (this.E / sq(star.mu))))
         this.th = Math.acos(clipNails(((sq(this.h) / (star.mu * this.r.mag())) - 1) / this.e))
-        console.log(this.th)
         if (this.r.dot(this.v) < 0) {   // if planet is approaching 0 phase (getting closer), then phase is negative
             this.th *= -1
         }

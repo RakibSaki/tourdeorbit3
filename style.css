@@ -2,8 +2,33 @@
     margin: 0;
     padding: 0;
     overflow: hidden;
+    box-sizing: border-box;
 }
 
 #test-color {
-    color: hsla(0, 0%, 100%)
+    color: hsl(0, 0%, 100%)
+}
+
+#zoom {
+    width: 150px;
+    height: 50px;
+    position: absolute;
+    left: calc(50% - 75px);
+    bottom: 0;
+    background-color: rgba(85, 107, 47, 0.479);
+    color: aliceblue;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    text-align: center;
+    border-radius: 5px;
+}
+
+#zoom button {
+    width: 20px;
+    height: 20px;
+    font-weight: bold;
+    color: rgba(85, 107, 47, 0.863);
+    background-color: white;
+    border-radius: 25%;
+    border-width: 1px;
 }

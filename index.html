@@ -16,6 +16,15 @@
     <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-    
+    <div id="zoom">
+        <button onclick="zoomIn()">+</button>
+        <button onclick="zoomOut()">-</button>
+        <p>This box is <span id="sscale">1.50e11</span> meters wide</p>
+    </div>
+    <script>
+        function updateSScale() {
+            document.querySelector('#sscale').innerHTML = 150 / (userZoom * unitsZoom)
+        }
+    </script>
 </body>
 </html>
