@@ -97,9 +97,11 @@ let planet = {
             }
         } else {
             let timeDone = 0
+            let rmag
             while (timeDone < time) {
-                let w = this.h / (sq(this.r.x) + sq(this.r.y))
-                let delT = Math.abs(0.001 / w)
+                rmag = this.h * this.h / (star.mu * (1 + (this.e * Math.cos(this.th))))
+                let w = this.h / sq(rmag)
+                let delT = Math.abs(0.0001 / w)
                 if ((delT + timeDone) > time) {
                     delT = time - timeDone
                 }
