@@ -43,7 +43,6 @@ function mouseDragged() {
         } else if (toChange == 'Velocity') {
             let factor = planet.v.mag() / 100
             planet.v.add((mouseX - pmouseX) * factor, (pmouseY - mouseY) * factor)
-            console.log(planet.v.mag())
         } else if (toChange == 'Star Mass') {
             star.resetMass(star.mass * (1 + ((mouseX - pmouseX) / 500)))
         }
@@ -79,6 +78,15 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         })
     }
+    document.querySelector('#menu').addEventListener('click', e => {
+        if (e.target.innerHTML.trim() == 'menu') {
+            document.querySelector('#tools').style.display = 'none'
+            e.target.innerHTML = 'menu_open'
+        } else {
+            document.querySelector('#tools').style.display = 'block'
+            e.target.innerHTML = 'menu'
+        }
+    })
 })
 
 function zoomIn() {

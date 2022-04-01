@@ -19,41 +19,46 @@
 </head>
 
 <body>
-    <span onclick="" id="play" class="material-icons button">
-        play_circle
+    <div id="tools">
+        <span onclick="" id="play" class="material-icons button">
+            play_circle
+        </span>
+        <div class="spacetime" id="zoom">
+            <div>
+                <span onclick="zoomIn()" class="material-icons button">
+                    zoom_in
+                </span>
+                <span onclick="zoomOut()" class="material-icons button">
+                    zoom_out
+                </span>
+    
+            </div>
+            <p>This box is <span id="sscale">1.50e11</span><br>meters wide</p>
+        </div>
+        <div class="spacetime" id="speed">
+            <div>
+                <span onclick="faster()" class="material-icons button">
+                    fast_forward
+                </span>
+                <span onclick="slower()" class="material-icons button">
+                    fast_rewind
+                </span>
+    
+            </div>
+            <p><span id="tscale">5.00</span> seconds show<br>1 Earth year</p>
+        </div>
+        <div id="change">
+            <p id="change-guide">Select a property to change</p>
+            <div>
+                <span>Position</span>
+                <span>Velocity</span>
+                <span>Star Mass</span>
+            </div>
+        </div>
+    </div>
+    <span id="menu" class="material-icons button">
+        menu
     </span>
-    <div class="spacetime" id="zoom">
-        <div>
-            <span onclick="zoomIn()" class="material-icons button">
-                zoom_in
-            </span>
-            <span onclick="zoomOut()" class="material-icons button">
-                zoom_out
-            </span>
-
-        </div>
-        <p>This box is <span id="sscale">1.50e11</span><br>meters wide</p>
-    </div>
-    <div class="spacetime" id="speed">
-        <div>
-            <span onclick="faster()" class="material-icons button">
-                fast_forward
-            </span>
-            <span onclick="slower()" class="material-icons button">
-                fast_rewind
-            </span>
-
-        </div>
-        <p><span id="tscale">5.00</span> seconds show<br>1 Earth year</p>
-    </div>
-    <div id="change">
-        <p id="change-guide">Select a property to change</p>
-        <div>
-            <span>Position</span>
-            <span>Velocity</span>
-            <span>Star Mass</span>
-        </div>
-    </div>
     <script>
 
     </script>
