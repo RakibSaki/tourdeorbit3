@@ -3,32 +3,130 @@
     padding: 0;
     overflow: hidden;
     box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 #test-color {
     color: hsl(0, 0%, 100%)
 }
 
-#zoom {
+:root {
+    --zoom-light-color: hsla(100, 51%, 82%, 0.226);
+    --zoom-dark-color: hsla(100, 51%, 82%, 0.788);
+    --speed-light-color: hsla(0, 51%, 82%, 0.226);
+    --speed-dark-color: hsla(0, 51%, 82%, 0.788);
+    --play-light-color: hsla(348, 80%, 50%, 0.227);
+    --play-dark-color: hsla(348, 80%, 50%, 0.788);
+    --change-back-color: hsl(120, 80%, 50%, 0.227);
+    --change-select-color: hsl(120, 80%, 50%, 0.788);
+    --change-text-color: hsl(300, 51%, 82%, 0.788);
+}
+
+.spacetime {
     width: 150px;
     height: 50px;
     position: absolute;
     left: calc(50% - 75px);
-    bottom: 0;
-    background-color: rgba(85, 107, 47, 0.479);
-    color: aliceblue;
-    font-family: Arial, Helvetica, sans-serif;
     font-size: 12px;
     text-align: center;
     border-radius: 5px;
+    display: flex;
+    justify-content: space-evenly;
 }
 
-#zoom button {
-    width: 20px;
+#zoom {
+    bottom: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    background-color: var(--zoom-light-color);
+    color: var(--zoom-dark-color);
+    border-top: 1px solid var(--zoom-dark-color);
+    align-items: center;
+}
+
+#speed {
+    top: 0;
+    background-color: var(--speed-light-color);
+    color: var(--speed-dark-color);
+}
+
+.spacetime div {
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.spacetime p {
+    flex-shrink: 1;
+    align-self: center;
+    background: none;
+    width: max-content;
+}
+
+.spacetime div .button {
+    font-size: 24px;
+    background-size: contain;
+    background-color: transparent;
+}
+
+#zoom div .button {
+    color: var(--zoom-dark-color);
+}
+
+#speed div .button {
+    color: var(--speed-dark-color);
+}
+
+.button {
+    cursor: pointer;
+}
+
+#play {
+    position: absolute;
+    top: 0;
+    left: 0;
+    /* border-bottom-right-radius: 5px; */
+    height: 50px;
+    width: 50px;
+    font-size: 50px;
+    color: var(--play-dark-color);
+    /* border: 2px solid var(--play-light-color); */
+}
+
+#change {
+    position: absolute;
+    height: 60px;
+    bottom: 0;
+    left: 0;
+    width: 225px;
+}
+
+#change div {
+    height: 40px;
+    width: 100%;
+    background-color: var(--change-back-color);
+    color: var(--change-text-color);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-radius: 10px;
+}
+
+#change div span {
+    border-radius: 10px;
+    padding: 5px;
+    cursor: pointer;
+}
+
+#change div .selected {
+    background-color: var(--change-select-color);
+    color: white;
+}
+
+#change p {
+    color: honeydew;
+    font-size: 10px;
     height: 20px;
-    font-weight: bold;
-    color: rgba(85, 107, 47, 0.863);
-    background-color: white;
-    border-radius: 25%;
-    border-width: 1px;
+    width: 100%;
+    text-align: center;
 }

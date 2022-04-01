@@ -17,7 +17,8 @@ let planet = {
         stroke(0, 50, 100)
         let vdraw = this.v.copy()
         vdraw.normalize()
-        vdraw.mult(this.width * 2.5)
+        // vdraw.mult(this.width * 2.5)
+        vdraw.mult(this.v.mag() * 1e6)
         vdraw.add(this.r)
         line(this.r.x, this.r.y, vdraw.x, vdraw.y)
     },
@@ -140,7 +141,7 @@ let planet = {
         this.e = sqrt(1 + (2 * sq(this.h) * (this.E / sq(star.mu))))
         this.th = Math.acos(clipNails(((sq(this.h) / (star.mu * this.r.mag())) - 1) / this.e))
         if (this.r.dot(this.v) < 0) {   // if planet is approaching 0 phase (getting closer), then phase is negative
-            this.th *= -1
+            this.th = (2 * PI) - this.th
         }
         this.phi = this.r.th() - this.th    // inclination of orbit relative to 'x-axis' of screen
         if (this.h < 0) {   // if rotating in negative direction, positive th is in negative direction

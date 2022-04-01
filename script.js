@@ -14,6 +14,8 @@ let lastTime = 0
 
 let play = false
 
+let toChange = null
+
 function draw() {
     background(0)
     translate(width / 2, height / 2)
@@ -33,6 +35,22 @@ function windowResized() {
     resizeCanvas(windowWidth, windowHeight)
 }
 
+function mouseDragged() {
+    if (toChange) {
+        if (toChange == 'Position') {
+            let factor = 1 / (userZoom * unitsZoom)
+            planet.r.add((pmouseX - mouseX) * factor, (mouseY - pmouseY) * factor)
+        } else if (toChange == 'Velocity') {
+            let factor = planet.v.mag() / 100
+            planet.v.add((mouseX - pmouseX) * factor, (pmouseY - mouseY) * factor)
+            console.log(planet.v.mag())
+        } else if (toChange == 'Star Mass') {
+            star.resetMass(star.mass * (1 + ((mouseX - pmouseX) / 500)))
+        }
+        planet.calculateOrbit()
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('#play').addEventListener('click', e => {
         if (!play) {
@@ -43,6 +61,24 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         play = !play
     })
+    let changeButtons = document.querySelectorAll('#change div span')
+    let changeGuide = document.querySelector('#change-guide')
+    for (let button of changeButtons) {
+        button.addEventListener('click', () => {
+            if (button.classList.value == 'selected') {
+                button.classList.remove('selected')
+                changeGuide.innerHTML = 'Select a property to change'
+                toChange = null
+            } else {
+                for (let otherButton of changeButtons) {
+                    otherButton.classList.remove('selected')
+                }
+                button.classList.add('selected')
+                changeGuide.innerHTML = 'Drag mouse to change ' + button.innerHTML
+                toChange = button.innerHTML
+            }
+        })
+    }
 })
 
 function zoomIn() {
