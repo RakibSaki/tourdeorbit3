@@ -39,7 +39,7 @@ function mouseDragged() {
     if (toChange) {
         if (toChange == 'Position') {
             let factor = 1 / (userZoom * unitsZoom)
-            planet.r.add((pmouseX - mouseX) * factor, (mouseY - pmouseY) * factor)
+            planet.r.add((mouseX - pmouseX) * factor, (pmouseY - mouseY) * factor)
         } else if (toChange == 'Velocity') {
             let factor = planet.v.mag() / 100
             planet.v.add((mouseX - pmouseX) * factor, (pmouseY - mouseY) * factor)
