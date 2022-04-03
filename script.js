@@ -16,6 +16,20 @@ let play = false
 
 let toChange = null
 
+
+function logItem(property, units, calculator) {
+    return {
+        property,
+        units,
+        calculator
+    }
+}
+
+let logList = [
+    logItem('Distance', 'meters', () => planet.r.mag()),
+    logItem('Speed', 'meters per second', () => planet.v.mag())
+]
+
 function draw() {
     background(0)
     translate(width / 2, height / 2)
@@ -28,6 +42,10 @@ function draw() {
     if (play) {
         planet.move((millis() - lastTime) * tscale)
         lastTime = millis()
+    }
+    let values = document.querySelectorAll('#logger p .property-value')
+    for (let i = 0; i < values.length; i++ ) {
+        values[i].innerHTML = logList[i].calculator().toPrecision(4).toString()
     }
 }
 
@@ -87,6 +105,21 @@ document.addEventListener('DOMContentLoaded', () => {
             e.target.innerHTML = 'menu'
         }
     })
+    let logger = document.querySelector('#logger')
+    for (let property in logList) {
+        let p = document.createElement('p')
+        let pr = document.createElement('span')
+        let un = document.createElement('span')
+        let va = document.createElement('span')
+        pr.innerHTML = property.property
+        un.innerHTML = property.units
+        va.innerHTML = property.calculator().toPrecision(4).toString()
+        va.classList.add('property-value')
+        p.appendChild(pr)
+        p.appendChild(un)
+        p.appendChild(va)
+        logger.appendChild(p)
+    }
 })
 
 function zoomIn() {
