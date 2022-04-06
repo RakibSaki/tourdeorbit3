@@ -4,6 +4,12 @@ let planet = {
     width: 2e10,
     r: new Vector(1.49e11, 0),
     v: new Vector(3.029e4, -PI / 2),
+    E: 0,
+    h: 0,
+    e: 0,
+    a: 0,
+    b: 0,
+    T: 0,
     drawOrbit() {
 
     },
@@ -166,7 +172,12 @@ let planet = {
                 this.path.push([r.x, -r.y])
             }
             // other calculations
-            this.a = 0.5 * star.mu / (this.E)
+            if (Math.abs(1 - this.e) > 0.01) {
+                this.a = 0.5 * star.mu / (this.E)
+            } else {
+                this.a = this.h * this.h / (star.mu * (1 + (this.e)))
+            }
+            this.b = 0
             this.ae = this.a * this.e
             this.atoe = this.a / this.e
             this.drawOrbit = this.drawOpenOrbit

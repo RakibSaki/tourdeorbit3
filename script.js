@@ -25,9 +25,28 @@ function logItem(property, units, calculator) {
     }
 }
 
+let units = {
+    mass: 'kilograms',
+    distance: 'meters',
+    time: 'second',
+    energy: 'joules',
+    angle: 'radians'
+}
+
 let logList = [
-    logItem('Distance', 'meters', () => planet.r.mag()),
-    logItem('Speed', 'meters per second', () => planet.v.mag())
+    logItem('Distance', units.distance, () => planet.r.mag()),
+    logItem('Speed', `${units.distance} per ${units.time}`, () => planet.v.mag()),
+    logItem('Star mass', units.time, () => star.mass),
+    logItem('Total specific energy', `${units.energy} per ${units.mass}`, () => planet.E),
+    logItem('Kinetic energy', `${units.energy} per ${units.mass}`, () => 0.5 * (sq(planet.v.x) + sq(planet.v.y))),
+    logItem('Gravitational energy', `${units.energy} per ${units.mass}`, () => -star.mu / planet.r.mag()),
+    logItem('Angular velocity', `${units.angle} per ${units.time}`, () => planet.v.mag() / planet.r.mag()),
+    logItem('Specific angular momentum', `${units.distance} squared per ${units.time}`, () => planet.h),
+    logItem('Radial velocity', `${units.distance} per ${units.time}`, () => planet.v.dot(planet.r.copy().normalize())),
+    logItem('Eccentricity', ``, () => planet.e),
+    logItem('Period', units.time, () => planet.T),
+    logItem('Semi-major axis', units.distance, () => planet.a),
+    logItem('Semi-minor axis', units.distance, () => planet.b),
 ]
 
 function draw() {
@@ -107,6 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
     })
     let logger = document.querySelector('#logs')
     for (let property of logList) {
+        console.log(property.calculator())
         let p = document.createElement('p')
         let pr = document.createElement('span')
         let un = document.createElement('span')
