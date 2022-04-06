@@ -79,6 +79,9 @@ function mouseDragged() {
             planet.r.add((mouseX - pmouseX) * factor, (pmouseY - mouseY) * factor)
         } else if (toChange == 'Velocity') {
             let factor = planet.v.mag() / 100
+            if (planet.v.mag() == 0) {
+                factor = 100
+            }
             planet.v.add((mouseX - pmouseX) * factor, (pmouseY - mouseY) * factor)
         } else if (toChange == 'Star Mass') {
             star.resetMass(star.mass * (1 + ((mouseX - pmouseX) / 500)))

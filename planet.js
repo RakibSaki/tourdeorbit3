@@ -180,6 +180,7 @@ let planet = {
             this.b = 0
             this.ae = this.a * this.e
             this.atoe = this.a / this.e
+            this.T = 0
             this.drawOrbit = this.drawOpenOrbit
         }
     },
