@@ -21,7 +21,7 @@ function logItem(property, units, calculator) {
     return {
         property,
         units,
-        calculator
+        calculator,
     }
 }
 
@@ -43,7 +43,7 @@ function draw() {
         planet.move((millis() - lastTime) * tscale)
         lastTime = millis()
     }
-    let values = document.querySelectorAll('#logger p .property-value')
+    let values = document.querySelectorAll('#logs p .property-value')
     for (let i = 0; i < values.length; i++ ) {
         values[i].innerHTML = logList[i].calculator().toPrecision(4).toString()
     }
@@ -105,8 +105,8 @@ document.addEventListener('DOMContentLoaded', () => {
             e.target.innerHTML = 'menu'
         }
     })
-    let logger = document.querySelector('#logger')
-    for (let property in logList) {
+    let logger = document.querySelector('#logs')
+    for (let property of logList) {
         let p = document.createElement('p')
         let pr = document.createElement('span')
         let un = document.createElement('span')
