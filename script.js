@@ -2,6 +2,7 @@ function setup() {
     createCanvas(windowWidth, windowHeight)
     colorMode(HSB, 360, 100, 100, 100)
     planet.calculateOrbit()
+    populateBackgroundStars(width, height)
 }
 
 let unitsZoom = 1 / 1e9     // 1 pixel shows 1 billion meters
@@ -53,7 +54,9 @@ function draw() {
     background(0)
     translate(width / 2, height / 2)
     scale(1, -1)
-    scale(unitsZoom * userZoom)
+    scale(userZoom)
+    backgroundStars.draw()
+    scale(unitsZoom)
     strokeWeight(1 / (unitsZoom * userZoom))
     //planet.drawVelocity()
     planet.draw()
@@ -70,6 +73,7 @@ function draw() {
 
 function windowResized() {
     resizeCanvas(windowWidth, windowHeight)
+    populateBackgroundStars(width, height)
 }
 
 function mouseDragged() {
