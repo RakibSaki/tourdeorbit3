@@ -55,7 +55,7 @@ function draw() {
     scale(1, -1)
     scale(unitsZoom * userZoom)
     strokeWeight(1 / (unitsZoom * userZoom))
-    planet.drawVelocity()
+    //planet.drawVelocity()
     planet.draw()
     star.draw()
     if (play) {
@@ -66,6 +66,7 @@ function draw() {
     for (let i = 0; i < values.length; i++ ) {
         values[i].innerHTML = logList[i].calculator().toPrecision(4).toString()
     }
+    star.initiateDraw()
 }
 
 function windowResized() {
