@@ -140,3 +140,19 @@
     color: azure;
     font-size: 50px;
 }
+
+#logs {
+    position: absolute;
+    right: 50px;
+    top: 100px;
+    color: azure;
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+}
+
+#logs p {
+    width: 100%;
+    display: inline-flex;
+    justify-content: space-between;
+}
