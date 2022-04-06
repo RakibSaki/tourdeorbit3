@@ -1,7 +1,7 @@
 let star = {
     mass: 1.9891e30,
     mu: 1.9891e30 * 6.67408e-11,
-    width: 7e10,
+    width: 1e11,
     resetMass(mass) {
         this.mass = mass
         this.mu = mass * 6.67408e-11
@@ -11,20 +11,14 @@ let star = {
     //     fill(0, 0, 100)
     //     circle(0, 0, 5e10)
     // }
-    initiateDraw() {
-        // give a radial gradient from white to transparent
-        this.gradient = drawingContext.createRadialGradient(0, 0, 0, 0, 0, this.width / 2)
-        this.gradient.addColorStop(0, color(0, 0, 100, 100))
-        this.gradient.addColorStop(0.5, color(0, 0, 100, 90))
-        this.gradient.addColorStop(1, color(0, 0, 0, 0))
-    },
     draw() {
         noStroke()
         fill(0) // otherwise drawingContext.fillStyle messes everything up
-
-        drawingContext.fillStyle = this.gradient
-
-        circle(0, 0, this.width)
+        for (let i = 0; i < 50 * userZoom; i+= 1) {
+            let factor = (i + 1) / (50 * userZoom)
+            fill(0, 0, 100, (Math.pow(1 - factor, 5) * 100))
+            circle(0, 0, factor * this.width)
+        }
         drawingContext.fillStyle = 'black'
     }
 }

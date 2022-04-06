@@ -66,7 +66,6 @@ function draw() {
     for (let i = 0; i < values.length; i++ ) {
         values[i].innerHTML = logList[i].calculator().toPrecision(4).toString()
     }
-    star.initiateDraw()
 }
 
 function windowResized() {

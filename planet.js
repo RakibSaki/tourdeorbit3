@@ -17,22 +17,23 @@ let planet = {
         this.drawOrbit()
         noStroke()
         translate(this.r.x, this.r.y)
-        fill(150, 80, 80)
-        // fill(0)
-        // let towardsSun = this.r.copy().normalize().mult(-this.width / 2)
-        // let gradient = drawingContext.createRadialGradient(towardsSun.x, towardsSun.y, 0, towardsSun.x, towardsSun.y, this.width)
-        // gradient.addColorStop(0, color(150, 80, 80))
-        // let closeness = this.r.mag() * 1e13
-        // if (closeness > 0.9) {
-        //     closeness = 0.9
-        // }
-        // gradient.addColorStop(0.6, color(150, 80, 80))
-        // gradient.addColorStop(0.6, color(150, 80, 30))
-        // gradient.addColorStop(1, color(150, 80, 30))
-        // drawingContext.fillStyle = gradient
+        fill(150, 80, 30)
         circle(0, 0, this.width)
+        fill(150, 80, 50)
+        let closeness = this.r.mag() / 10e11
+        let towardsSun = this.r.copy().normalize().mult(this.width * (-0.5 + ((1-closeness) / 2)))
+        if (closeness > 0.9) {
+            closeness = 0.9
+        }
+        circle(towardsSun.x, towardsSun.y, this.width * (1 - closeness))
+        fill(150, 80, 80)
+        closeness = this.r.mag() / 5e11
+        towardsSun = this.r.copy().normalize().mult(this.width * (-0.5 + ((1-closeness) / 2)))
+        if (closeness > 0.9) {
+            closeness = 0.9
+        }
+        circle(towardsSun.x, towardsSun.y, this.width * (1 - closeness))
         translate(-this.r.x, -this.r.y)
-        fill(0)
     },
     drawVelocity() {
         stroke(0, 50, 100)
